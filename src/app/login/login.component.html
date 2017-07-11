@@ -1,0 +1,32 @@
+<div class="container d-flex flex-center-center">
+  <div class="row mt-4 w-35">
+    <div class="col-sm">
+      <div class="form-container white p-3">
+        <div class="form__header text-sm-center align-items-center">
+          <h4 class="h4-responsive">Login Form</h4>
+        </div>
+        <hr>
+        <form class="mt-2 p-3" #f="ngForm" (ngSubmit)="login(f)">
+          <div class="form-group row">
+            <div class="col-sm">
+              <input type="email" class="form-control" pattern="/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/" name="email" id="email" placeholder="Enter email" required>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-sm">
+              <input type="password" class="form-control" name="password" id="password" placeholder="Enter password" required>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-sm">
+                <a class="btn-link" routerLink="/register">Register</a>
+            </div>
+            <div class="col-sm d-flex justify-content-end">
+              <button type="submit" class="btn btn-sm btn-primary">Login</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

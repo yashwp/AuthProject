@@ -1,5 +1,6 @@
-import { User, IUser } from './../models/user';
 import { Component, OnInit } from '@angular/core';
+import { Router ,ActivatedRoute } from '@angular/router';
+import { User, IUser } from './../models/user';
 import { AuthService } from './../services/auth.service';
 
 @Component({
@@ -9,18 +10,35 @@ import { AuthService } from './../services/auth.service';
 export class RegisterComponent implements OnInit {
 
     user = new User();
+    isMatched:boolean = true;
 
-    constructor(private _authService: AuthService) { }
+    constructor(private route: ActivatedRoute, private router:Router,
+                private _authService: AuthService) { }
 
-    ngOnInit() { }
+    ngOnInit() {
+        
+    }
 
     register(obj: any){
        if(obj.valid){
-           this.user.email = obj.value.email;
-           this.user.firstName = obj.value.fname;
-           this.user.lastName = obj.value.lname;
-           this.user.password = obj.value.password;
-           this._authService.registerUser(this.user);
+           if(obj.value.cnfPass===obj.value.password){
+                this.isMatched =true;
+                this.user.email = obj.value.email;
+                this.user.firstName = obj.value.fname;
+                this.user.lastName = obj.value.lname;
+                this.user.password = obj.value.password;
+                this._authService.registerUser(this.user).subscribe((res)=>{
+                    if(res){
+                        this.router.navigate(['/']);
+                    }
+                },
+                error=>{
+                    console.log('Error occured',error);
+                })
+           }
+           else{
+               this.isMatched= false;
+           }
        }
     }
 }

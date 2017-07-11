@@ -1,6 +1,8 @@
-import { IUser } from './../models/user';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { IUser } from './../models/user';
 
+import { AuthService } from './../services/auth.service';
 @Component({
     selector: 'home-component',
     templateUrl: './home.component.html',
@@ -8,7 +10,13 @@ import { Component, OnInit } from '@angular/core';
 export class HomeComponent implements OnInit {
     
     user: IUser[] = [];
-    constructor() { }
+    constructor(private _authService: AuthService,
+                private router:Router) { }
 
     ngOnInit() { }
+
+    logout(){
+        this._authService.logout();
+        this.router.navigate(['/login']);
+    }
 }

@@ -15,27 +15,43 @@ export class AuthService {
     private apiUrlReg: string = "https://reqres.in/api/register";
 
     static isAuthenticated: boolean = false;
+    static isToken:string;
+
     constructor(private _http: Http){}
-    login(body: IUser){
+    loginUser(body: IUser){
         let bodyString = JSON.stringify(body); // Stringify payload
-        let headers      = new Headers({ 'Content-Type': 'application/json' }); // ... Set content type to JSON
+        let headers      = new Headers({ 'Content-Type': 'application/json' }); 
         let options       = new RequestOptions({ headers: headers }); // Create a request option
 
         return this._http.post(this.apiUrlLogin, body, options) // Using post request
-                         .map((res:Response) => res.json()) // Converting response to json calling .json()
+                         .map((res:Response) =>{
+                             let user =  res.json();
+                             if(user.token){
+                                AuthService.isAuthenticated =true;
+                                return user;
+                             }
+                         }) // Converting response to json calling .json()
                          .catch((error:any) => Observable.throw(error.json().error || 'Server error')); //Handling error if occured
-    }   
+        }   
 
 
 
     registerUser(body: IUser){
         let bodyString = JSON.stringify(body); // Stringify payload
-        let headers      = new Headers({ 'Content-Type': 'application/json' }); // ... Set content type to JSON
+        let headers      = new Headers({ 'Content-Type': 'application/json' }); 
         let options       = new RequestOptions({ headers: headers }); // Create a request option
 
         return this._http.post(this.apiUrlReg, body, options) // Using post request
-                         .map((res:Response) => res.json()) // Converting response to json calling .json()
+                         .map((res:Response) => {
+                            AuthService.isAuthenticated =true;
+                            return res.json();
+                        }) // Converting response to json calling .json()
                          .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
+    }
+
+    logout() {
+        // remove user from local storage to log user out
+        AuthService.isAuthenticated = false;
     }
 
 

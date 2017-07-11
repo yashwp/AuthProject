@@ -8,17 +8,20 @@
         <hr>
         <form class="mt-2 p-3" #f="ngForm" (ngSubmit)="login(f)">
           <div class="form-group row">
-            <div class="col-sm">
-              <input type="email" class="form-control" pattern="/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/" name="email" id="email" placeholder="Enter email" required>
+            <div class="col-sm mb-2">
+              <input type="email" class="form-control" name="email" #email="ngModel" id="email" pattern="[^ @]*@[^ @]*" placeholder="Enter email" required [(ngModel)]="user.email">
+              <small class="form-text error-text" [class.hidden-xs-up]="email.valid || (email.pristine && !f.submitted)">Invalid email</small>
+
             </div>
           </div>
           <div class="form-group row">
-            <div class="col-sm">
-              <input type="password" class="form-control" name="password" id="password" placeholder="Enter password" required>
+            <div class="col-sm mb-2">
+              <input type="password" class="form-control" name="password" #password="ngModel" id="password" placeholder="Enter password" required minlength="4" [(ngModel)]="user.password">
+              <small class="form-text error-text" [class.hidden-xs-up]="password.valid || (password.pristine && !f.submitted)">Invalid password</small>
             </div>
           </div>
           <div class="form-group row">
-            <div class="col-sm">
+            <div class="col-sm mb-2">
                 <a class="btn-link" routerLink="/register">Register</a>
             </div>
             <div class="col-sm d-flex justify-content-end">

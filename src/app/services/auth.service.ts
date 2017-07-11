@@ -15,7 +15,7 @@ export class AuthService {
     private apiUrlReg: string = "https://reqres.in/api/register";
 
     static isAuthenticated: boolean = false;
-    static isToken:string;
+    static token:string;
 
     constructor(private _http: Http){}
     loginUser(body: IUser){
@@ -27,6 +27,7 @@ export class AuthService {
                          .map((res:Response) =>{
                              let user =  res.json();
                              if(user.token){
+                                AuthService.token = user.token;
                                 AuthService.isAuthenticated =true;
                                 return user;
                              }
@@ -43,6 +44,7 @@ export class AuthService {
 
         return this._http.post(this.apiUrlReg, body, options) // Using post request
                          .map((res:Response) => {
+                            
                             AuthService.isAuthenticated =true;
                             return res.json();
                         }) // Converting response to json calling .json()
